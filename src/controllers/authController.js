@@ -4,7 +4,7 @@ import {
   logoutUserService,
 } from "../services/authService.js";
 
-export const registerUser = async (req, res) => {
+export const registerUser = async (req, res, next) => {
   try {
     const user = await registerUserService(req.body);
     res.status(201).json({
@@ -13,16 +13,16 @@ export const registerUser = async (req, res) => {
       data: user,
     });
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      message: error.message,
-    });
+    next(error);
   }
 };
 
 export const loginUser = async (req, res, next) => {
   try {
     const { username, password } = req.body;
+    if (!username || !password) {
+      throw new Error("Username and password are required");
+    }
     const { token, user } = await loginUserService(username, password);
     res.status(200).json({
       success: true,
@@ -31,12 +31,12 @@ export const loginUser = async (req, res, next) => {
       token,
     });
   } catch (error) {
-    next(error.message);
+    next(error);
   }
 };
 
 //logout user
-export const logoutUser = async (req, res) => {
+export const logoutUser = async (req, res, next) => {
   try {
     const session = req.session;
     await logoutUserService(session);
@@ -45,9 +45,6 @@ export const logoutUser = async (req, res) => {
       message: "Logout successful!",
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+    next(error);
   }
 };

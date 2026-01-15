@@ -10,23 +10,28 @@ export const authenticateToken = (req, res, next) => {
 
   if (!token) {
     return res.status(401).json({
-      message: "Access token invalid",
+      message: "Access token missing",
     });
   }
-  jwt.verify(token, process.env.ACCES_TOKEN_SECRET, (err, decodedUser) => {
-    if (err) {
-      return res.status(403).json({
-        message: "Token expired or invalid",
-      });
-    }
+
+  try {
+    const decodedUser = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
     req.user = decodedUser;
     next();
-  });
+  } catch (error) {
+    return res.status(403).json({
+      message: "Token expired or invalid",
+    });
+  }
 };
 
 export const createAccessToken = (payload) => {
-  return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET,{
-    expiresIn:'30m'
-  });
-
+  try {
+    return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
+      expiresIn: "30m",
+    });
+  } catch (error) {
+    throw new Error("Error creating access token");
+  }
 };
