@@ -1,7 +1,9 @@
 import {
+  deleteUserService,
   getAllUsersService,
   updateUserService,
 } from "../services/usersService.js";
+
 
 //fetch users data
 export const fetchUsersController = async (req, res) => {
@@ -35,3 +37,21 @@ export const updateUserController = async (req, res) => {
     });
   }
 };
+
+//delete user controller
+
+export const deleteUserController =async (req, res) => {
+  try {
+    const deletedUser  = await deleteUserService(req.params.id);
+    res.status(200).json({
+      success: true,
+      message:"User deleted successfully",
+      data: deletedUser
+    })
+  } catch (error) {
+    res.status(500).json({
+      success:false,
+      message:error.message
+    })
+  }
+}

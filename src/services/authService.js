@@ -41,13 +41,14 @@ export const registerUserService = async (data) => {
 
 export const loginUserService = async (username, password) => {
   //Check user
-  const user = await User.findOne(username);
+  const user = await User.findOne({username});
   if (!user) {
     throw new Error("Invalid username or password");
   }
 
   //compare password
-  if (!comparePassword(password, user.password)) {
+  const isMatch = await comparePassword(password, user.password);
+  if (!isMatch) {
     throw new Error("Invalid username or password");
   }
   //create access token and refresh
