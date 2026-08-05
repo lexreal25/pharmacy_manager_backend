@@ -62,14 +62,14 @@ app.use(expressSession({
 // });
 
 
-app.use("/api/v1/auth", authRoute);
-app.use("/api/v1/users", userRoute);
-app.use("/api/v1/dasboard", dashBoardRoute);
-app.use("/api/v1/sales", salesRoute);
-app.use("/api/v1/inventory", inventoryRoute);
-app.use("/api/v1/medicines", medicinesRoute);
-app.use("/api/v1/customers", customersRoute);
-app.use("/api/v1/suppliers", suppliersRoute);
+app.use("/api/auth", authRoute);
+app.use("/api/users", userRoute);
+app.use("/api/dasboard", dashBoardRoute);
+app.use("/api/sales", salesRoute);
+app.use("/api/inventory", inventoryRoute);
+app.use("/api/medicines", medicinesRoute);
+app.use("/api/customers", customersRoute);
+app.use("/api/suppliers", suppliersRoute);
 
 
 

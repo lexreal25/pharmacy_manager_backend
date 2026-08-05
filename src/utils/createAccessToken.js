@@ -35,3 +35,32 @@ export const createAccessToken = (payload) => {
     throw new Error("Error creating access token");
   }
 };
+
+export const userProtected = (req, res, next) => {
+  //check if the user is staff/manager
+  authenticateToken(req, res, () => {
+    if (
+      req.user.id === req.params.id &&
+      (req.user.role === "staff" ||
+        req.user.role === "manager" ||
+        req.user.role === "admin")
+    ) {
+      next();
+    }
+    res.status(403).json({
+      error: "Acces denied, you are not authorized to perform this action",
+    });
+  });
+};
+
+export const adminProtected = (req, res, next) => {
+  //check if the user is admin
+  authenticateToken(req, res, () => {
+    if (req.user.roole === "admin") {
+      next();
+    }
+    res.status(403).json({
+      error: "Access denied, not authorized to perform this action",
+    });
+  });
+};

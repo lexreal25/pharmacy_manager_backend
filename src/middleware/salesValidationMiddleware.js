@@ -10,3 +10,7 @@ export const salesValidationMiddleware = (req, res, next) => {
     }
     next();
 }
+
+export const fetchSalesDataMiddleware = (req, res, next) => {
+    
+}
