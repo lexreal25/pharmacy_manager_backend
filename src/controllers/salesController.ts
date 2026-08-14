@@ -1,5 +1,12 @@
 import type { Request, Response, NextFunction } from "express";
-import { createSalesService } from "../services/salesService.js";
+import {
+  createSalesService,
+  deletedSalesService,
+  getAllSalesService,
+  updatedSalesService,
+} from "../services/salesService.js";
+import type { SalesRequestParams } from "../types/sales.types.js";
+
 
 export const createSalesController = async (
   req: Request,
@@ -8,7 +15,7 @@ export const createSalesController = async (
 ) => {
   try {
     const newSales = await createSalesService(req.body);
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: "Sales submitted successfully",
       data: newSales,
@@ -18,23 +25,56 @@ export const createSalesController = async (
   }
 };
 
-// export const getAllSalesController = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction,
-// ) => {
-//   try {
-//     // check if the user is admin / sales agent
-//     const sales = await getAllSalesService();
-//     res.status(200).json({
-//       success: true,
-//       message: "Sales retrieved successfully",
-//       data: sales,
-//     });
-//   } catch (error: any) {
-//     res.status(500).json({
-//       success: false,
-//       message: error?.message || "Failed to fetch sales",
-//     });
-//   }
-// };
+export const getAllSalesController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    // check if the user is admin / sales agent
+    const sales = await getAllSalesService();
+    return res.status(200).json({
+      success: true,
+      message: "Sales retrieved successfully",
+      data: sales,
+    });
+  } catch (error: any) {
+    next(error);
+  }
+};
+
+export const updateSalesController = async (
+  req: Request<SalesRequestParams>,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const updatedSale = await updatedSalesService(req.params.id, req.body);
+
+    return res.status(200).json({
+      success: true,
+      message: "Sales updated successfully",
+      data: updatedSale,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteSalesController = async (
+  req: Request<SalesRequestParams>,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const deletedSales = await deletedSalesService(req.params.id);
+
+    return res.status(200).json({
+      success: true,
+      message: "Sales deleted successfully",
+      data: deletedSales,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

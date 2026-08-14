@@ -4,6 +4,11 @@ export interface SalesData {
   quantity: number;
   totalAmount: number;
   price: number;
-  tax: number; //if applicable
+  tax_value: number; //if applicable
   discount: number; //if applicable
+}
+
+export interface SalesRequestParams {
+  [key:string]: string;
+  id: string;
 }

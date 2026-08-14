@@ -22,9 +22,13 @@ const salesSchema = new mongoose.Schema({
     discount:{
         type: Number,
     },
-    tax:{
+    tax_value:{
         type: Number,
         required: true
+    },
+    subtotal:{
+        type: Number,
+
     },
     totalAmount:{
         type: Number,

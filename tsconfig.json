@@ -41,5 +41,5 @@
     "moduleDetection": "force",
     "skipLibCheck": true
   },
-  "exclude": ["node_modules", "dist", "server.js"]
+  "exclude": ["node_modules", "dist", "server.ts"]
 }

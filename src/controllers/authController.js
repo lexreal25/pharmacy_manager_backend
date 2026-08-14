@@ -7,7 +7,7 @@ import {
 export const registerUser = async (req, res, next) => {
   try {
     const user = await registerUserService(req.body);
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: "User registered successfully!",
       data: user,
@@ -24,7 +24,7 @@ export const loginUser = async (req, res, next) => {
       throw new Error("Username and password are required");
     }
     const { token, user } = await loginUserService(username, password);
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Login successful!",
       user,
@@ -40,7 +40,7 @@ export const logoutUser = async (req, res, next) => {
   try {
     const session = req.session;
     await logoutUserService(session);
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Logout successful!",
     });

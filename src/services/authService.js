@@ -3,7 +3,6 @@ import {
   encryptPassword,
 } from "../middleware/passwordEncryption.js";
 import User from "../models/userModel.js";
-import { createAccessToken } from "../utils/createAccessToken.js";
 
 export const registerUserService = async (data) => {
   const { firstName, lastName, email, role, username, password } = data;
