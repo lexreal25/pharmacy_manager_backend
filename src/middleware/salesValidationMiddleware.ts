@@ -10,6 +10,6 @@ export const salesValidationMiddleware = (req:Request, res:Response, next:NextFu
             details: error.details?.[0]?.message ?? 'Invalid sales payload'
         })
     }
-    next();
+   return next();
 }
 

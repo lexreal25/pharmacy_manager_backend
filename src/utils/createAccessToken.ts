@@ -52,7 +52,6 @@ export const userProtected = (
   next: NextFunction
 ) => {
   //check if the user is staff/manager
-  authenticateToken(req, res, () => {
     if(!req.user){
       return res.status(401).json({
         success:false,
@@ -66,19 +65,7 @@ export const userProtected = (
         message:"Access denied"
       })
     }
-    next();
-    // if (
-    //   req.user.id === req.params.id &&
-    //   (req.user.role === "staff" ||
-    //     req.user.role === "manager" ||
-    //     req.user.role === "admin")
-    // ) {
-    //   return next();
-    // }
-    // res.status(403).json({
-    //   error: "Access denied, you are not authorized to perform this action",
-    // });
-  });
+    return next();
 };
 
 export const adminProtected = (
@@ -90,7 +77,7 @@ export const adminProtected = (
   if(!req.user){
     return res.status(401).json({
       success:false,
-      message:"Access denied"
+      message:"Authentication failed!"
     })
   }
   if(req.user.role !== "admin"){
@@ -99,13 +86,5 @@ export const adminProtected = (
       message:"Admin access required"
     })
   }
-  next();
-  // authenticateToken(req, res, () => {
-  //   if (req.user.role === "admin") {
-  //     return next();
-  //   }
-  //   res.status(403).json({
-  //     error: "Access denied, not authorized to perform this action",
-  //   });
-  // });
+  return next();
 };

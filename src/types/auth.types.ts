@@ -1,4 +1,4 @@
 export interface JwtPayload {
     id:string,
-    role:"staf" | "manager" | "admin"
+    role:"staff" | "manager" | "admin"
 }

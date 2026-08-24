@@ -3,10 +3,10 @@ import {
   createSalesService,
   deletedSalesService,
   getAllSalesService,
+  getSalesByIdService,
   updatedSalesService,
 } from "../services/salesService.js";
 import type { SalesRequestParams } from "../types/sales.types.js";
-
 
 export const createSalesController = async (
   req: Request,
@@ -31,7 +31,6 @@ export const getAllSalesController = async (
   next: NextFunction,
 ) => {
   try {
-    // check if the user is admin / sales agent
     const sales = await getAllSalesService();
     return res.status(200).json({
       success: true,
@@ -39,6 +38,23 @@ export const getAllSalesController = async (
       data: sales,
     });
   } catch (error: any) {
+    next(error);
+  }
+};
+
+export const getSalesById = async (
+  req: Request<{ id: string }>,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const sales = await getSalesByIdService(req.params.id);
+    return res.status(201).json({
+      success: true,
+      message: "Data retrieved successfully",
+      data: sales,
+    });
+  } catch (error) {
     next(error);
   }
 };

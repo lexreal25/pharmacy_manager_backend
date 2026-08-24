@@ -3,8 +3,23 @@ import type { SalesData } from "../types/sales.types.js";
 import { calcSales } from "../helper/calculateSales.js";
 
 export const getAllSalesService = async () => {
-  return await Sales.find();
+  try {
+    return await Sales.find().sort({createAt: -1});
+  } catch (error) {
+    throw new Error("Failed to retrieve data")
+  }
 };
+
+export const getSalesByIdService = async(id:string) => {
+  try {
+    const sales = await Sales.findById(id);
+    if(sales){
+      return sales
+    }
+  } catch (error) {
+    throw  new Error("Data request failed")
+  }
+}
 
 export const createSalesService = async (sales: SalesData) => {
   const { totalAmount, subtotal, taxAmount } = calcSales(

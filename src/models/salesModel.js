@@ -33,8 +33,12 @@ const salesSchema = new mongoose.Schema({
     totalAmount:{
         type: Number,
         required: true,
-    }
-})
+    },
+},
+{
+    timeStamps:true
+}
+)
 
 const Sales = mongoose.model("Sales", salesSchema)
 export default Sales;
