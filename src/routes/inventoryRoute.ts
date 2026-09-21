@@ -15,7 +15,7 @@ import { inventoryValidationMiddleware } from "../middleware/inventoryValidation
 const router = express.Router();
 
 router.get(
-  "/:id",
+  "/",
   authenticateToken,
   userProtected,
   adminProtected,

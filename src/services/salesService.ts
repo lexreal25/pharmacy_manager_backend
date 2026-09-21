@@ -2,24 +2,40 @@ import Sales from "../models/salesModel.js";
 import type { SalesData } from "../types/sales.types.js";
 import { calcSales } from "../helper/calculateSales.js";
 
+//only admin
 export const getAllSalesService = async () => {
   try {
-    return await Sales.find().sort({createAt: -1});
+    return await Sales.find().sort({ createAt: -1 });
   } catch (error) {
-    throw new Error("Failed to retrieve data")
+    throw new Error("Failed to retrieve data");
   }
 };
 
-export const getSalesByIdService = async(id:string) => {
+//get sales by id
+export const getSalesByIdService = async (id: string) => {
   try {
     const sales = await Sales.findById(id);
-    if(sales){
-      return sales
+    if (sales) {
+      return sales;
     }
   } catch (error) {
-    throw  new Error("Data request failed")
+    throw new Error("Data request failed");
   }
-}
+};
+
+//get sales by user id
+export const getSalesByUserIdService = async (userId: string) => {
+  try {
+    const sales = await Sales.find({ user: userId })
+      .populate("productId")
+      .sort({ createAt: -1 });
+    if (sales) {
+      return sales;
+    }
+  } catch (error) {
+    throw new Error("Data request failed");
+  }
+};
 
 export const createSalesService = async (sales: SalesData) => {
   const { totalAmount, subtotal, taxAmount } = calcSales(
@@ -38,6 +54,7 @@ export const createSalesService = async (sales: SalesData) => {
     discount: sales.discount,
     subtotal,
     totalAmount,
+    user: sales.user_id,
   });
   return newSales;
 };

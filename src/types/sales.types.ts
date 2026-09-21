@@ -6,6 +6,7 @@ export interface SalesData {
   price: number;
   tax_value: number; //if applicable
   discount: number; //if applicable
+  user_id:string; //reference to the user who created the sales record
 }
 
 export interface SalesRequestParams {

@@ -19,10 +19,10 @@ export const productSchema = new mongoose.Schema(
       min: [0, "Purchase price cannot be negative"],
     },
 
-    sellingPrice: {
+    unitPrice: {
       type: Number,
       required: true,
-      min: [0, "Selling price cannot be negative"],
+      min: [0, "Unit price cannot be negative"],
     },
   },
   {

@@ -13,17 +13,17 @@ export const registerUser = async (req, res, next) => {
       data: user,
     });
   } catch (error) {
-    next(error);
+    next(error.message);
   }
 };
 
 export const loginUser = async (req, res, next) => {
   try {
-    const { username, password } = req.body;
-    if (!username || !password) {
-      throw new Error("Username and password are required");
+    const { email, password } = req.body;
+    if (!email || !password) {
+      throw new Error("email and password are required");
     }
-    const { token, user } = await loginUserService(username, password);
+    const { token, user } = await loginUserService(email, password);
     return res.status(200).json({
       success: true,
       message: "Login successful!",
@@ -31,7 +31,7 @@ export const loginUser = async (req, res, next) => {
       token,
     });
   } catch (error) {
-    next(error);
+    return next(error.message);
   }
 };
 

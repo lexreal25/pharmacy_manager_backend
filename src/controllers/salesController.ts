@@ -4,6 +4,7 @@ import {
   deletedSalesService,
   getAllSalesService,
   getSalesByIdService,
+  getSalesByUserIdService,
   updatedSalesService,
 } from "../services/salesService.js";
 import type { SalesRequestParams } from "../types/sales.types.js";
@@ -43,7 +44,7 @@ export const getAllSalesController = async (
 };
 
 export const getSalesById = async (
-  req: Request<{ id: string }>,
+  req: Request<SalesRequestParams>,
   res: Response,
   next: NextFunction,
 ) => {
@@ -59,6 +60,25 @@ export const getSalesById = async (
   }
 };
 
+//GET SALES BY USER ID
+export const getSalesByUserId = async (
+  req: Request<{userId:string}>,
+  res: Response,
+  next: NextFunction
+) => {
+  try{
+    const sales = await getSalesByUserIdService(req.params.userId);
+    return res.status(200).json({
+      success: true,
+      message:"Sales retrieved successfully",
+      data:sales
+    })
+  }
+  catch(error)
+  {
+    next(error);
+  }
+}
 export const updateSalesController = async (
   req: Request<SalesRequestParams>,
   res: Response,

@@ -3,6 +3,7 @@ import {
   encryptPassword,
 } from "../middleware/passwordEncryption.js";
 import User from "../models/userModel.js";
+import { createAccessToken } from "../utils/createAccessToken.js";
 
 export const registerUserService = async (data) => {
   const { firstName, lastName, email, role, username, password } = data;
@@ -38,18 +39,19 @@ export const registerUserService = async (data) => {
 
 //login user service
 
-export const loginUserService = async (username, password) => {
+export const loginUserService = async (email, password) => {
   //Check user
-  const user = await User.findOne({username});
+  const user = await User.findOne({email});
   if (!user) {
-    throw new Error("Invalid username or password");
+    throw new Error("Invalid email or password");
   }
 
-  //compare password
-  const isMatch = await comparePassword(password, user.password);
-  if (!isMatch) {
-    throw new Error("Invalid username or password");
-  }
+  const isMatch = await comparePassword(
+  password,
+  user.password
+);
+
+
   //create access token and refresh
   const accessToken = createAccessToken({ id: user._id, role: user.role });
   const { password: psw, ...userData } = user.toObject();
