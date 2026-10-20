@@ -1,6 +1,10 @@
 export interface InventoryData {
   productId: string;
   quantity: number;
-  batchNumber: string;
+  price:number,
+  description:string,
+  supplier:string,
+  
+  // batchNumber: string;
   expiryDate: Date;
 }

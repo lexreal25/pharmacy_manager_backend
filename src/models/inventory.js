@@ -1,7 +1,5 @@
 import { mongoose } from "mongoose";
 
-const itemType = mongoose.Schema.String;
-
 const inventorySchema = new mongoose.Schema(
   {
     productId: {
@@ -10,23 +8,40 @@ const inventorySchema = new mongoose.Schema(
       trim: true,
       ref: "Product",
     },
+    price: {
+      type: Number,
+      required: true,
+      trim: true,
+      min: [0, "Price can not be genative"],
+    },
     quantity: {
       type: Number,
       required: true,
       trim: true,
-      min:[0,"Quantity cannot be negative"]
+      min: [0, "Quantity cannot be negative"],
     },
     expiryDate: {
       type: Date,
       required: true,
       trim: true,
     },
-   
-    batchNumber: {
+    description: {
       type: String,
+      trim: true,
+      required: true,
+    },
+    supplier: {
+      type: String,
+      // type: mongoose.Schema.Types.ObjectId,
+      // ref:"Supplier",
       required: true,
       trim: true,
     },
+    // batchNumber: {
+    //   type: String,
+    //   required: true,
+    //   trim: true,
+    // },
   },
   {
     timestamps: true,

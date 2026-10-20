@@ -1,6 +1,7 @@
 export interface ProductData {
-  productName: string;
+  item: string;
   description?: string;
-  purchasePrice: number;
-  sellingPrice: number;
+  manufacturer: string;
+  category: string;
+  weight: number;
 }

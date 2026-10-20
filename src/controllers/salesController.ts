@@ -15,7 +15,7 @@ export const createSalesController = async (
   next: NextFunction,
 ) => {
   try {
-    const newSales = await createSalesService(req.body);
+    const newSales = await createSalesService({...req.body,userId:req.user?.id});
     return res.status(201).json({
       success: true,
       message: "Sales submitted successfully",

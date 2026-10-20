@@ -22,6 +22,7 @@ export const fetchUsersController = async (req, res) => {
 };
 
 export const updateUserController = async (req, res) => {
+
   try {
     const updatedUser = await updateUserService(req.params.id, req.body);
     return res.status(200).json({

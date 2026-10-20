@@ -9,9 +9,9 @@ export const getAllUsersService = async () => {
 };
 
 export const updateUserService = async (userId, userData) => {
+  const { username, email, firstName, lastName, role, password, status } =
+    userData;
 
-  const { username, email, firstName, lastName, role, password } = userData;
-  
   //check if the user exists
   const isUser = await User.findById(userId);
   if (!isUser) {
@@ -19,14 +19,14 @@ export const updateUserService = async (userId, userData) => {
   }
 
   //update user
-  //const allowedFields = ["username", "email", "firstName", "lastName", "role", "password"];
-
-  username && (isUser.username = username);
-  email && (isUser.email = email);
-  firstName && (isUser.firstName = firstName);
-  lastName && (isUser.lastName = lastName);
-  role && (isUser.role = role);
-  password && (isUser.password = password); //will be hashed in pre save middleware
+  // Update only provided fields
+  if (username) isUser.username = username;
+  if (email) isUser.email = email;
+  if (firstName) isUser.firstName = firstName;
+  if (lastName) isUser.lastName = lastName;
+  if (role) isUser.role = role;
+  if (status) isUser.status = status;
+  if (password) isUser.password = password;
 
   const updateUser = await isUser.save();
   const { password: pw, ...updatedUser } = updateUser.toObject();

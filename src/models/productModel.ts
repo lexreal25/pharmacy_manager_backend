@@ -1,29 +1,33 @@
-import { string } from "joi";
 import mongoose from "mongoose";
 
 export const productSchema = new mongoose.Schema(
   {
-    productName: {
-      type: string,
+    item: {
+      type: String,
       trim: true,
       required: true,
     },
     description: {
-      type: string,
+      type: String,
       trim: true,
       default: "",
     },
-    purchasePrice: {
-      type: Number,
+    manufacturer: {
+      type: String,
       required: true,
-      min: [0, "Purchase price cannot be negative"],
     },
 
-    unitPrice: {
-      type: Number,
+    category: {
+      type: String,
+      trim: true,
       required: true,
-      min: [0, "Unit price cannot be negative"],
     },
+    weight:{
+      type:Number,
+      trim: true,
+      required:true
+    }
+
   },
   {
     timestamps: true,

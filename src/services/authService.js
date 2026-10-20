@@ -1,9 +1,7 @@
-import {
-  comparePassword,
-  encryptPassword,
-} from "../middleware/passwordEncryption.js";
 import User from "../models/userModel.js";
 import { createAccessToken } from "../utils/createAccessToken.js";
+
+import bcrypt from "bcrypt";
 
 export const registerUserService = async (data) => {
   const { firstName, lastName, email, role, username, password } = data;
@@ -17,7 +15,7 @@ export const registerUserService = async (data) => {
   }
 
   //hash password
-  const hashedPassword = await encryptPassword(password);
+  const hashedPassword = await bcrypt.hash(password, 10);
 
   //create new user
   const newUser = new User({
@@ -40,20 +38,23 @@ export const registerUserService = async (data) => {
 //login user service
 
 export const loginUserService = async (email, password) => {
-  //Check user
-  const user = await User.findOne({email});
+  
+  const user = await User.findOne({ email });
   if (!user) {
     throw new Error("Invalid email or password");
   }
 
-  const isMatch = await comparePassword(
-  password,
-  user.password
-);
+  const isMatch = await bcrypt.compare(password, user.password);
 
+  if (!isMatch) {
+    throw new Error("Invalid email or password");
+  }
 
-  //create access token and refresh
-  const accessToken = createAccessToken({ id: user._id, role: user.role });
+  const accessToken = createAccessToken({
+    id: user._id,
+    role: user.role,
+  });
+
   const { password: psw, ...userData } = user.toObject();
 
   return {
@@ -62,13 +63,3 @@ export const loginUserService = async (email, password) => {
   };
 };
 
-export const logoutUserService = async (session) => {
-  return new Promise((resolve, reject) => {
-    session.destroy((err) => {
-      if (err) {
-        reject(new Error("Logout failed"));
-      }
-    });
-    resolve();
-  });
-};

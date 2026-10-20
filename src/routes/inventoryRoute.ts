@@ -15,14 +15,14 @@ import { inventoryValidationMiddleware } from "../middleware/inventoryValidation
 const router = express.Router();
 
 router.get(
-  "/",
+  "/stock",
   authenticateToken,
   userProtected,
   adminProtected,
   getInventoryController,
 );
 router.post(
-  "/",
+  "/add-inventory",
   authenticateToken,
   adminProtected,
   inventoryValidationMiddleware,

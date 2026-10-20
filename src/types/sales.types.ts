@@ -1,12 +1,14 @@
+export interface SalesItemInput{
+  inventoryId:string,
+  quantity:number;
+}
+
 export interface SalesData {
-  productId: string;
-  customerName: string;
-  quantity: number;
-  totalAmount: number;
-  price: number;
-  tax_value: number; //if applicable
-  discount: number; //if applicable
-  user_id:string; //reference to the user who created the sales record
+  customer: string;
+  items:SalesItemInput[];
+  discount:number;
+  userId: string;
+  paymentMethod:["Cash"| "Mobile Money" | "Card"]
 }
 
 export interface SalesRequestParams {

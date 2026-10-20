@@ -4,11 +4,21 @@ import {
   updateUserController,
 } from "../controllers/userController.js";
 
-import { userValidatonMiddleware } from "../middleware/validateUserMiddleware.js";
-import { adminProtected, authenticateToken } from "../utils/createAccessToken.js";
+import {
+  adminProtected,
+  authenticateToken,
+} from "../utils/createAccessToken.js";
+import { updateUserValidationMiddleware } from "../middleware/validateUserMiddleware.js";
 
 const router = express.Router();
 
-router.get("/all",adminProtected, fetchUsersController);
-router.put("/:id", authenticateToken, adminProtected, userValidatonMiddleware, updateUserController);
+router.get("/all", authenticateToken, adminProtected, fetchUsersController);
+
+router.put(
+  "/:id",
+  authenticateToken,
+  adminProtected,
+  updateUserValidationMiddleware,
+  updateUserController,
+);
 export default router;

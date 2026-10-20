@@ -1,10 +1,19 @@
 import type { NextFunction, Request, Response } from "express";
 
-export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.error(err);
+interface AppError extends Error {
+  statusCode?: number;
+}
 
-    return res.status(500).json({
-        success: false,
-        message: err.message || "Internal Server Error"
-    });
+export const errorHandler = (
+  err: AppError,
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const statusCode = err.statusCode || 400;
+
+  return res.status(statusCode).json({
+    success: false,
+    message: err.message || "Something went wrong",
+  });
 };

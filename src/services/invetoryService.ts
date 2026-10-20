@@ -3,13 +3,15 @@ import type { InventoryData } from "../types/inventory.types.js";
 
 export const createInventoryService = async (product: InventoryData) => {
   try {
-    const { productId, quantity, batchNumber, expiryDate } = product;
+    const { productId, quantity, description,price, expiryDate,supplier } = product;
 
     const newInventory = await Inventory.create({
       productId,
       quantity,
-      batchNumber,
+      description,
       expiryDate,
+      price,
+      supplier
     });
     return newInventory;
   } catch (error) {
@@ -72,6 +74,7 @@ export const deleteInventoryService = async(id:string) => {
     if(!deleteInventory){
       throw new Error("Inventory not found!");
     }
+    return deleteInventory;
   } catch (error) {
     if(error instanceof Error)
       throw error;

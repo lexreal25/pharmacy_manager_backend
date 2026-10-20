@@ -23,7 +23,7 @@ router.get("/:id", authenticateToken, userProtected, adminProtected);
 
 //create sales route
 router.post(
-  "/",
+  "/add-sales",
   authenticateToken,
   userProtected,
   adminProtected,

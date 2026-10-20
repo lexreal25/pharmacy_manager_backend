@@ -7,13 +7,18 @@ export const authenticateToken = (
   res: Response,
   next: NextFunction
 ) => {
-  const authHeader = req.headers.authorization;
+  // const authHeader = req.headers.authorization;
 
-  //Extract token from header
-  const token = authHeader?.startsWith("Bearer ")
-    ? authHeader.split(" ")[1]
-    : null;
+  // //Extract token from header
+  // const token = authHeader?.startsWith("Bearer ")
+  //   ? authHeader.split(" ")[1]
+  //   : null;
+   console.log("AUTH REQUEST:", req.method, req.originalUrl);
+  console.log("COOKIES:", req.cookies);
 
+  const token = req.cookies?.access_token;
+
+  console.log("TOKEN:", token ? "FOUND" : "MISSING");
   if (!token) {
     return res.status(401).json({
       message: "Access token missing",
@@ -30,7 +35,7 @@ export const authenticateToken = (
 
     return next();
   } catch (error) {
-    return res.status(403).json({
+    return res.status(401).json({
       message: "Token expired or invalid",
     });
   }
@@ -58,9 +63,9 @@ export const userProtected = (
         message:"Access denied, authentication required"
       })
     }
-    const allowedRoles = ["staff","manager"];
+    const allowedRoles = ["admin","staff","manager"];
     if(!allowedRoles.includes(req.user.role)){
-      return res.status(403).json({
+      return res.status(401).json({
         success:false,
         message:"Access denied"
       })
@@ -81,7 +86,7 @@ export const adminProtected = (
     })
   }
   if(req.user.role !== "admin"){
-    return res.status(403).json({
+    return res.status(401).json({
       success:false,
       message:"Admin access required"
     })
